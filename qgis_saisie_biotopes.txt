@@ -7,3 +7,18 @@ les couches biotopes pour croisement avec les polygones saisis :
   - etages_de_vegetation (par département) ; champs : ogc_fid int, cd_ev int, lb_ev k100 (pour jointure spatiale), geometry, lb_ev_complet k254 (libellé complet de l'ev)
   - ombroclimat (pour le tag)
   - variante bioclimatique (pour le tag)
+  - triggers : 
+  - maj : 
+  CREATE TRIGGER maj_ajout_poly AFTER INSERT ON  saisie_biotopes_26 begin update  saisie_biotopes_26 set littoralite='position intérieure' where rowid = new.rowid; update  saisie_biotopes_26 set hectares= st_area( saisie_biotopes_26.geom)/10000 where rowid = new.rowid; end 
+  
+  CREATE TRIGGER maj_ajout_poly38_etage_veg AFTER INSERT ON biotopes_poly_38 begin update biotopes_poly_38 set etage_de_vegetation =(select etages_de_vegetation.lb_ev from etages_de_vegetation where
+  
+  CREATE TRIGGER maj_ajout_poly_ombroclimat AFTER INSERT ON biotopes_poly_38 begin update biotopes_poly_38 set ombroclimat =(select ombroclimat.lb_io_rec from ombroclimat where st_within(st_pointonsurface(biotopes_poly_38.geometry),ombroclimat.geometry) and biotopes_poly_38.ROWID = new.rowid)where rowid = new.rowiD; end 
+  
+  CREATE TRIGGER maj_ajout_poly38_cont AFTER INSERT ON biotopes_poly_38 begin update biotopes_poly_38 set continentalite =(select continentalite.lb_ic_rec from continentalite where st_within(st_pointonsurface(biotopes_poly_38.geometry),continentalite.geometry) and biotopes_poly_38.ROWID = new.rowid)where rowid = new.rowid; end 
+  
+  CREATE TRIGGER maj_ajout_poly38_var_bio AFTER INSERT ON biotopes_poly_38 begin update biotopes_poly_38 set variante_bioclimatique =(select variante_bioclimatique.lb_var_bio from variante_bioclimatique where st_within(st_pointonsurface(biotopes_poly_38.geometry),variante_bioclimatique.geometry) and biotopes_poly_38.ROWID = new.rowid)where rowid = new.rowid; end 
+  
+  CREATE TRIGGER maj_ajout_poly38_enneigement AFTER INSERT ON biotopes_poly_38 begin update biotopes_poly_38 set enneigement =(select enneigement.enneigemen from enneigement where st_within(st_pointonsurface(biotopes_poly_38.geometry),enneigement.geometry) and biotopes_poly_38.ROWID = new.rowid)where rowid = new.rowid; end
+  
+  CREATE TRIGGER maj_modif_valeurs AFTER UPDATE ON biotopes_poly_38 begin update biotopes_poly_38 set biotopes=littoralite||', '||etage_de_vegetation||', '||ombroclimat||', '||continentalite||', '|| variante_bioclimatique||', '||acidite_edaphique||', '||humidite_edaphique||', '||enneigement ; end 
