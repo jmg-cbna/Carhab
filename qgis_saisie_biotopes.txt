@@ -1,7 +1,7 @@
 Préparation du projet QGIS pour la saisie des biotopes.
 -saisie_biotopes_xx.gpkg
 Contient la couche de saisie du même nom
-les couches biotopes pour croisement avce les polygones saisis :
+les couches biotopes pour croisement avec les polygones saisis :
   - continentalite (pour le tag)
   - enneigement (par département) ; champs : ogc_fid int, cd_enneigement int, lb_enneigement k254
   - etages_de_vegetation (par département) ; champs : ogc_fid int, cd_ev int, lb_ev k100 (pour jointure spatiale), geometry, lb_ev_complet k254 (libellé complet de l'ev)
