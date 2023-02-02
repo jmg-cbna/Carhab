@@ -1,1 +1,9 @@
 Préparation du projet QGIS pour la saisie des biotopes.
+-saisie_biotopes_xx.gpkg
+Contient la couche de saisie du même nom
+les couches biotopes pour croisement avce les polygones saisis :
+  - continentalite (pour le tag)
+  - enneigement (par département)
+  - etages_de_vegetation (par département)
+  - ombroclimat (pour le tag)
+  - variante bioclimatique (pour le tag)
