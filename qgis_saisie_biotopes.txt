@@ -9,7 +9,9 @@ les couches biotopes pour croisement avec les polygones saisis :
   - variante bioclimatique (pour le tag)
   - triggers : 
   - maj : 
-  CREATE TRIGGER maj_ajout_poly AFTER INSERT ON  saisie_biotopes_26 begin update  saisie_biotopes_26 set littoralite='position intérieure' where rowid = new.rowid; update  saisie_biotopes_26 set hectares= st_area( saisie_biotopes_26.geom)/10000 where rowid = new.rowid; end 
+  CREATE TRIGGER calc_littoralite AFTER INSERT ON  saisie_biotopes_26 begin update  saisie_biotopes_26 set littoralite='position_interieure' where rowid = new.rowid; update  saisie_biotopes_26 set hectares= st_area( saisie_biotopes_26.geom)/10000 where rowid = new.rowid; end 
+  
+  --CREATE TRIGGER calc_surface AFTER INSERT ON  saisie_biotopes_26 begin update  saisie_biotopes_26 set littoralite='position_interieure' where rowid = new.rowid; update  saisie_biotopes_26 set hectares= st_area( saisie_biotopes_26.geom)/10000 where rowid = new.rowid; end 
   
   CREATE TRIGGER maj_ajout_poly38_etage_veg AFTER INSERT ON biotopes_poly_38 begin update biotopes_poly_38 set etage_de_vegetation =(select etages_de_vegetation.lb_ev from etages_de_vegetation where
   
