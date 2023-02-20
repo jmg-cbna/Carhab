@@ -1,4 +1,4 @@
-Préparation du projet QGIS pour la saisie des biotopes.
+rPréparation du projet QGIS pour la saisie des biotopes.
 -saisie_biotopes_xx.gpkg
 Contient la couche de saisie du même nom
 les couches biotopes pour croisement avec les polygones saisis :
@@ -9,9 +9,33 @@ les couches biotopes pour croisement avec les polygones saisis :
   - variante bioclimatique (pour le tag)
   - triggers : 
   - maj : 
-  CREATE TRIGGER calc_littoralite AFTER INSERT ON  saisie_biotopes_26 begin update  saisie_biotopes_26 set littoralite='position_interieure' where rowid = new.rowid; update  saisie_biotopes_26 set hectares= st_area( saisie_biotopes_26.geom)/10000 where rowid = new.rowid; end 
+CREATE TRIGGER calc_littoralite AFTER INSERT ON  saisie_biotopes_26 begin
+update  saisie_biotopes_26 set littoralite='position_interieure' where rowid = new.rowid;
+end
+
+CREATE TRIGGER calc_area AFTER INSERT ON  saisie_biotopes_26 begin 
+update  saisie_biotopes_26 set area= st_area( saisie_biotopes_26.geom) where rowid = new.rowid;
+end
+
+CREATE TRIGGER calc_etage_vege AFTER INSERT ON  saisie_biotopes_26 begin
+update saisie_biotopes_26 set etage_de_vegetation =(select etages_de_vegetation.lb_23 from etages_de_vegetation where st_within(st_pointonsurface(saisie_biotopes_26.geom),etages_de_vegetation.geom) and saisie_biotopes_26.ROWID = new.rowid)where rowid = new.rowiD;
+end
+CREATE TRIGGER calc_ombroclimat AFTER INSERT ON  saisie_biotopes_26 begin
+update saisie_biotopes_26 set ombroclimat =(select ombroclimat.lb_23 from ombroclimat where st_within(st_pointonsurface(saisie_biotopes_26.geom),ombroclimat.geom) and saisie_biotopes_26.ROWID = new.rowid)where rowid = new.rowiD;
+end
+
+CREATE TRIGGER calc_continentalite AFTER INSERT ON  saisie_biotopes_26 begin
+update saisie_biotopes_26 set continentalite =(select continentalite.lb_23 from continentalite where st_within(st_pointonsurface(saisie_biotopes_26.geom),continentalite.geom) and saisie_biotopes_26.ROWID = new.rowid)where rowid = new.rowiD;
+end
+CREATE TRIGGER calc_variante_biocl AFTER INSERT ON  saisie_biotopes_26 begin
+update saisie_biotopes_26 set variante_bioclimatique =(select variante_bioclimatique.lb_23 from variante_bioclimatique where st_within(st_pointonsurface(saisie_biotopes_26.geom),variante_bioclimatique.geom) and saisie_biotopes_26.ROWID = new.rowid)where rowid = new.rowiD;
+end
+
+CREATE TRIGGER calc_enneigement AFTER INSERT ON  saisie_biotopes_26 begin     
+update saisie_biotopes_26 set enneigement =(select enneigement.lb_23 from enneigement where st_within(st_pointonsurface(saisie_biotopes_26.geom),enneigement.geom) and saisie_biotopes_26.ROWID = new.rowid)where rowid = new.rowiD;    
+end
   
-  --CREATE TRIGGER calc_surface AFTER INSERT ON  saisie_biotopes_26 begin update  saisie_biotopes_26 set littoralite='position_interieure' where rowid = new.rowid; update  saisie_biotopes_26 set hectares= st_area( saisie_biotopes_26.geom)/10000 where rowid = new.rowid; end 
+
   
   CREATE TRIGGER maj_ajout_poly38_etage_veg AFTER INSERT ON biotopes_poly_38 begin update biotopes_poly_38 set etage_de_vegetation =(select etages_de_vegetation.lb_ev from etages_de_vegetation where
   
